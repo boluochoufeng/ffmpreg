@@ -1,7 +1,7 @@
 A Rust-native alternative to FFmpeg.
 
 FFmpReg is a media processing engine written in Rust with a CLI and library API.
-It provides the same core capabilities as FFmpeg—decode, transform, encode—but
+It provides the same core capabilities as FFmpeg—decode, transform, encode, but
 with explicit pipelines, strong typing, and predictable behavior.
 
 Below is a minimal end-to-end example in Rust. It reads a WAV file, applies gain
