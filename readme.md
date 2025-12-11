@@ -1,65 +1,77 @@
-io → container → codec → transform → codec → container → io
+A Rust-native alternative to FFmpeg.
 
-Todo
+FFmpReg is a media processing engine written in Rust with a CLI and library API.
+It provides the same core capabilities as FFmpeg—decode, transform, encode—but
+with explicit pipelines, strong typing, and predictable behavior.
 
-- Minimal WAV pipeline
+Below is a minimal end-to-end example in Rust. It reads a WAV file, applies gain
+and normalization at the frame level, then writes a new WAV file.
 
-  > End-to-end pipeline, audible audio.
-  - [ ] Create project and basic folders (core, containers/wav, codecs/pcm, cli)
-  - [ ] Implement Packet, Frame, Timebase
-  - [ ] Read WAV and produce Packets (containers/wav/read.rs)
-  - [ ] Write Packets back (containers/wav/write.rs)
-  - [ ] PCM passthrough codec (decode → encode)
-  - [ ] Connect pipeline: read → decode → encode → write
-  - [ ] Minimal CLI: ffmpreg -i input.wav -o output.wav
-  - [ ] Test with a simple WAV file
+```rust
+use ffmpreg::prelude::*;
 
-- Frame inspection / Media info
+fn main() -> Result<()> {
+    pipeline()
+        .input("input.wav")
+        .map(|frame| frame.gain(2.0))
+        .map(|frame| frame.normalize())
+        .output("output.wav")
+        .run()
+}
+```
 
-  > Show internal frame info, minimal ffprobe alternative.
-  - [ ] Add CLI option --show
-  - [ ] Iterate over Packets → Frames
-  - [ ] Display pts, sample count, channels, sample rate
-  - [ ] Test output with example WAV
+Frames are explicit values in the pipeline. Transforms are normal Rust functions
+applied in sequence, and execution is deterministic at compile time.
 
-- Basic transform
+The same pipeline can be expressed using the CLI with an equivalent structure:
 
-  > Apply simple operation on frames (e.g., gain)
-  - [ ] Create transforms/gain.rs
-  - [ ] Implement trait Transform<T>
-  - [ ] Integrate pipeline: read → decode → transform → encode → write
-  - [ ] CLI: ffmpreg -filter gain=2.0
-  - [ ] Test amplified audio
+```bash
+ffmpreg -i input.wav -o output.wav \
+  --apply gain=2.0 \
+  --apply normalize
+```
 
-- Multi-file / batch
+Using FFMPREG from the CLI does not introduce any additional abstraction. Each
+`--apply` corresponds to a frame transform executed in order, and the output is
+always a valid, immediately playable file.
 
-  > Process multiple files using the same pipeline
-  - [ ] CLI accepts multiple files or wildcard (folder/\*.wav)
-  - [ ] Iterate files → pipeline
-  - [ ] Create separate output for each file
-  - [ ] Test with 2-3 WAV files
+Beyond simple pipelines, FFMPREG makes it easy to inspect media without switching
+tools. Frame metadata can be printed directly from the decode stage, providing a
+lightweight alternative to `ffprobe`:
 
-- More containers
+```bash
+ffmpreg -i input.wav --show
+```
 
-  > Add raw video support (Y4M)
-  - [ ] Create containers/y4m/read.rs and write.rs
-  - [ ] Parse Y4M header (width, height, framerate, colorspace)
-  - [ ] Produce Packets/Frames
-  - [ ] Minimal pipeline: decode → encode → write
-  - [ ] CLI: ffmpreg -i input.y4m -o output.y4m
-  - [ ] Test with a Y4M file
+```
+Frame 0: pts=0, samples=1024, channels=2, rate=44100
+Frame 1: pts=1024, samples=1024, channels=2, rate=44100
+```
 
-- More codecs
+Batch processing follows the same principles. Multiple inputs are treated as
+independent pipelines with no shared state. This makes parallel execution and
+scripting straightforward:
 
-  > ADPCM, multi-channel PCM
-  - [ ] Add ADPCM codec
-  - [ ] Support multi-channel PCM
-  - [ ] Pipeline: decode → transform → encode → write
-  - [ ] Roundtrip tests for each codec
+```bash
+ffmpreg --input folder/*.wav --output out/
+```
 
-- Chained filters
-  > Apply multiple transforms in sequence
-  - [ ] CLI: ffmpreg-filter gain=2.0 -filter normalize
-  - [ ] Create transforms/normalize.rs
-  - [ ] Pipeline applies filters in sequence
-  - [ ] Test audio with two chained filters
+The library API exposes the same primitives at a lower level for full control.
+Containers, codecs and frames are explicit types, allowing custom pipelines
+without the high-level builder:
+
+```rust
+use ffmpreg::containers::wav;
+use ffmpreg::codecs::pcm;
+
+let packets = wav::read("input.wav")?;
+let frames = pcm::decode_packets(&packets)?;
+
+let frames = frames
+    .into_iter()
+    .map(|f| f.gain(2.0))
+    .collect::<Vec<_>>();
+
+let out = pcm::encode_frames(&frames)?;
+wav::write("output.wav", &out)?;
+```
