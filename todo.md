@@ -5,61 +5,61 @@ Todo
 - Minimal WAV pipeline
 
   > End-to-end pipeline, audible audio.
-  - [ ] Create project and basic folders (core, containers/wav, codecs/pcm, cli)
-  - [ ] Implement Packet, Frame, Timebase
-  - [ ] Read WAV and produce Packets (containers/wav/read.rs)
-  - [ ] Write Packets back (containers/wav/write.rs)
-  - [ ] PCM passthrough codec (decode → encode)
-  - [ ] Connect pipeline: read → decode → encode → write
-  - [ ] Minimal CLI: ffmpreg -i input.wav -o output.wav
-  - [ ] Test with a simple WAV file
+  - [x] Create project and basic folders (core, containers/wav, codecs/pcm, cli)
+  - [x] Implement Packet, Frame, Timebase
+  - [x] Read WAV and produce Packets (containers/wav/read.rs)
+  - [x] Write Packets back (containers/wav/write.rs)
+  - [x] PCM passthrough codec (decode → encode)
+  - [x] Connect pipeline: read → decode → encode → write
+  - [x] Minimal CLI: ffmpreg -i input.wav -o output.wav
+  - [x] Test with a simple WAV file
 
 - Frame inspection / Media info
 
   > Show internal frame info, minimal ffprobe alternative.
-  - [ ] Add CLI option --show
-  - [ ] Iterate over Packets → Frames
-  - [ ] Display pts, sample count, channels, sample rate
-  - [ ] Test output with example WAV
+  - [x] Add CLI option --show
+  - [x] Iterate over Packets → Frames
+  - [x] Display pts, sample count, channels, sample rate
+  - [x] Test output with example WAV
 
 - Basic transform
 
   > Apply simple operation on frames (e.g., gain)
-  - [ ] Create transforms/gain.rs
-  - [ ] Implement trait Transform<T>
-  - [ ] Integrate pipeline: read → decode → transform → encode → write
-  - [ ] CLI: ffmpreg -filter gain=2.0
-  - [ ] Test amplified audio
+  - [x] Create transforms/gain.rs
+  - [x] Implement trait Transform<T>
+  - [x] Integrate pipeline: read → decode → transform → encode → write
+  - [x] CLI: ffmpreg --apply gain=2.0
+  - [x] Test amplified audio
 
 - Multi-file / batch
 
   > Process multiple files using the same pipeline
-  - [ ] CLI accepts multiple files or wildcard (folder/\*.wav)
-  - [ ] Iterate files → pipeline
-  - [ ] Create separate output for each file
-  - [ ] Test with 2-3 WAV files
+  - [x] CLI accepts multiple files or wildcard (folder/\*.wav)
+  - [x] Iterate files → pipeline
+  - [x] Create separate output for each file
+  - [x] Test with 2-3 WAV files
 
 - More containers
 
   > Add raw video support (Y4M)
-  - [ ] Create containers/y4m/read.rs and write.rs
-  - [ ] Parse Y4M header (width, height, framerate, colorspace)
-  - [ ] Produce Packets/Frames
-  - [ ] Minimal pipeline: decode → encode → write
-  - [ ] CLI: ffmpreg -i input.y4m -o output.y4m
-  - [ ] Test with a Y4M file
+  - [x] Create containers/y4m/read.rs and write.rs
+  - [x] Parse Y4M header (width, height, framerate, colorspace, aspect ratio)
+  - [x] Produce Packets/Frames
+  - [x] Minimal pipeline: decode → encode → write
+  - [x] CLI: ffmpreg -i input.y4m -o output.y4m
+  - [x] Test with a Y4M file (lossless passthrough verified)
 
 - More codecs
 
   > ADPCM, multi-channel PCM
-  - [ ] Add ADPCM codec
-  - [ ] Support multi-channel PCM
-  - [ ] Pipeline: decode → transform → encode → write
-  - [ ] Roundtrip tests for each codec
+  - [x] Add ADPCM codec
+  - [x] Support multi-channel PCM
+  - [x] Pipeline: decode → transform → encode → write
+  - [x] Roundtrip tests for each codec
 
 - Chained filters
   > Apply multiple transforms in sequence
-  - [ ] CLI: ffmpreg-filter gain=2.0 -filter normalize
-  - [ ] Create transforms/normalize.rs
-  - [ ] Pipeline applies filters in sequence
-  - [ ] Test audio with two chained filters
+  - [x] CLI: ffmpreg --apply gain=2.0 --apply normalize
+  - [x] Create transforms/normalize.rs
+  - [x] Pipeline applies filters in sequence
+  - [x] Test audio with two chained filters
