@@ -1,6 +1,6 @@
 use ffmpreg::container::{WavFormat, WavReader, WavWriter};
 use ffmpreg::core::{Demuxer, Muxer, Packet, Timebase};
-use std::io::Cursor;
+use ffmpreg::io::Cursor;
 
 fn create_test_wav() -> Vec<u8> {
 	let sample_rate: u32 = 44100;
