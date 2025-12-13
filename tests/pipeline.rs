@@ -9,8 +9,8 @@ mod transform;
 use ffmpreg::codecs::{PcmDecoder, PcmEncoder, RawVideoDecoder, RawVideoEncoder};
 use ffmpreg::container::{WavFormat, WavReader, WavWriter, Y4mReader, Y4mWriter};
 use ffmpreg::core::{Decoder, Demuxer, Encoder, Muxer, Timebase, Transform};
+use ffmpreg::io::{BufferedWriter, Cursor};
 use ffmpreg::transform::{Gain, Normalize, TransformChain};
-use std::io::{BufWriter, Cursor};
 
 #[test]
 fn test_full_wav_pipeline() {
@@ -106,7 +106,7 @@ fn test_full_y4m_pipeline() {
 	let format = reader.format();
 
 	let output_buffer = Cursor::new(Vec::new());
-	let buf_writer = BufWriter::new(output_buffer);
+	let buf_writer: BufferedWriter<Cursor<Vec<u8>>> = BufferedWriter::new(output_buffer);
 	let mut writer = Y4mWriter::new(buf_writer, format.clone()).unwrap();
 
 	let timebase = Timebase::new(format.framerate_den, format.framerate_num);
@@ -169,7 +169,7 @@ fn test_y4m_aspect_ratio_preservation() {
 	assert_eq!(aspect.den, 117);
 
 	let output_buffer = Cursor::new(Vec::new());
-	let buf_writer = BufWriter::new(output_buffer);
+	let buf_writer: BufferedWriter<Cursor<Vec<u8>>> = BufferedWriter::new(output_buffer);
 	let mut writer = Y4mWriter::new(buf_writer, format.clone()).unwrap();
 
 	while let Some(packet) = reader.read_packet().unwrap() {
