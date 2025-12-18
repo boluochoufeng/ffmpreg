@@ -83,11 +83,7 @@ impl<'a> BitReader<'a> {
 			return Some(0);
 		}
 		let sign_bit = 1u32 << (n - 1);
-		if val & sign_bit != 0 {
-			Some(val as i32 - (1i32 << n))
-		} else {
-			Some(val as i32)
-		}
+		if val & sign_bit != 0 { Some(val as i32 - (1i32 << n)) } else { Some(val as i32) }
 	}
 
 	pub fn align_to_byte(&mut self) {
