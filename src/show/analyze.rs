@@ -179,7 +179,9 @@ fn collect_wav_frames<R: crate::io::MediaRead>(
 			break;
 		};
 
-		let hex = bytes_to_hex(&pkt.data, opts.hex_limit);
+		// store always a good preview (256 bytes) for xxd mode
+		let hex_preview_limit = 256.max(opts.hex_limit);
+		let hex = bytes_to_hex(&pkt.data, hex_preview_limit);
 		let decoded = decoder.decode(pkt.clone())?;
 
 		if decoded.is_none() {
@@ -205,6 +207,7 @@ fn collect_y4m_frames<R: crate::io::MediaRead>(
 	let mut decoder = RawVideoDecoder::new(format.clone());
 	let limit = opts.frame_limit as u64;
 	let mut frame_idx = 0u64;
+	let hex_preview_limit = 256.max(opts.hex_limit);
 
 	loop {
 		let reached_limit = frame_idx >= limit;
@@ -219,7 +222,7 @@ fn collect_y4m_frames<R: crate::io::MediaRead>(
 			break;
 		};
 
-		let hex = bytes_to_hex(&pkt.data, opts.hex_limit);
+		let hex = bytes_to_hex(&pkt.data, hex_preview_limit);
 		let decoded = decoder.decode(pkt.clone())?;
 
 		if decoded.is_none() {

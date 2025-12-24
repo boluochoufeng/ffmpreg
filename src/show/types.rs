@@ -8,7 +8,7 @@ pub struct ShowOptions {
 
 impl Default for ShowOptions {
 	fn default() -> Self {
-		Self { json: false, stream_filter: None, frame_limit: 10, hex_limit: 8 }
+		Self { json: false, stream_filter: None, frame_limit: 10, hex_limit: 128 }
 	}
 }
 

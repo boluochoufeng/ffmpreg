@@ -51,3 +51,55 @@ pub fn bytes_to_hex(data: &[u8], limit: usize) -> String {
 pub fn hex_without_spaces(hex: &str) -> String {
 	hex.replace(' ', "").replace(" ...", "...")
 }
+
+pub fn hex_string_to_bytes(hex_str: &str) -> Vec<u8> {
+	hex_str.split_whitespace().filter_map(|s| u8::from_str_radix(s, 16).ok()).collect()
+}
+
+pub fn format_xxd_style(hex_str: &str, max_bytes: usize) -> String {
+	let bytes = hex_string_to_bytes(hex_str);
+	let take = bytes.len().min(max_bytes);
+	let data = &bytes[..take];
+
+	let mut result = String::new();
+
+	for (chunk_idx, chunk) in data.chunks(16).enumerate() {
+		let offset = chunk_idx * 16;
+
+		// Offset in hex: "00000000: "
+		result.push_str(&format!("{:08x}: ", offset));
+
+		// 16 bytes in two groups of 8
+		for (i, byte) in chunk.iter().enumerate() {
+			result.push_str(&format!("{:02x}", byte));
+			if i == 7 && chunk.len() > 8 {
+				result.push(' ');
+			} else if i < 7 || (i == 7 && chunk.len() <= 8) {
+				result.push(' ');
+			}
+		}
+
+		// Padding if last chunk has less than 16 bytes
+		if chunk.len() < 16 {
+			let padding = 16 - chunk.len();
+			for _ in 0..padding {
+				result.push_str("   ");
+			}
+		}
+
+		result.push(' ');
+
+		// ASCII representation (or "." for non-printable)
+		for byte in chunk {
+			if *byte >= 32 && *byte <= 126 {
+				result.push(*byte as char);
+			} else {
+				result.push('.');
+			}
+		}
+
+		result.push('\n');
+	}
+
+	result.trim_end().to_string()
+}
