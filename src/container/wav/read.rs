@@ -83,10 +83,17 @@ impl<R: MediaRead> WavReader<R> {
 		let mut buf = [0u8; 8];
 		loop {
 			reader.read_exact(&mut buf)?;
-			if &buf[0..4] == b"data" {
-				let size = u32::from_le_bytes([buf[4], buf[5], buf[6], buf[7]]) as u64;
-				return Ok((size, 0));
+			let chunk_id = &buf[0..4];
+			let chunk_size = u32::from_le_bytes([buf[4], buf[5], buf[6], buf[7]]) as u64;
+
+			if chunk_id == b"data" {
+				return Ok((chunk_size, 0));
 			}
+
+			// skip unknown chunks (with padding for odd sizes)
+			let skip_size = chunk_size + (chunk_size % 2);
+			let mut skip_buf = vec![0u8; skip_size as usize];
+			reader.read_exact(&mut skip_buf)?;
 		}
 	}
 }
