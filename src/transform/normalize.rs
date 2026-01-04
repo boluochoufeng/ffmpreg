@@ -1,4 +1,5 @@
-use crate::core::{Frame, Transform};
+use crate::core::Transform;
+use crate::core::frame::Frame;
 use crate::io::Result;
 
 pub struct Normalize {}
@@ -7,7 +8,7 @@ impl Normalize {}
 
 impl Transform for Normalize {
 	fn apply(&mut self, mut frame: Frame) -> Result<Frame> {
-		if let Some(audio_frame) = frame.audio_mut() {}
+		if let Some(_audio_frame) = frame.audio_mut() {}
 		Ok(frame)
 	}
 

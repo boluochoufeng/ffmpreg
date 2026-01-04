@@ -1,6 +1,8 @@
-use crate::core::{Frame, Transform};
+use crate::core::Transform;
+use crate::core::frame::Frame;
 use crate::io::Result;
 
+#[allow(dead_code)]
 pub struct Volume {
 	factor: f32,
 }
@@ -13,7 +15,7 @@ impl Volume {
 
 impl Transform for Volume {
 	fn apply(&mut self, mut frame: Frame) -> Result<Frame> {
-		if let Some(audio_frame) = frame.audio_mut() {}
+		if let Some(_audio_frame) = frame.audio_mut() {}
 		Ok(frame)
 	}
 

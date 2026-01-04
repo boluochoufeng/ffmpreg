@@ -1,5 +1,4 @@
 pub mod compatible;
-pub mod ebml;
 pub mod frame;
 pub mod packet;
 pub mod stream;
