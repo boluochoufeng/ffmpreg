@@ -1,11 +1,11 @@
-`ffmpreg` is a rust-native multimedia toolkit that decodes, transforms, and
+FFmpReg is a rust-native multimedia toolkit that decodes, transforms, and
 encodes audio and video without requiring FFmpeg. It provides both a
 command-line interface and a library API, allowing you to process media files
 directly from the terminal or integrate media processing into Rust applications.
 The project aims to deliver a safe, deterministic, and modular media processing
 engine with a focus on explicit pipelines and developer control.
 
-[Sponsoring](#sponsoring) | [License](/LICENSE) | [Discord](https://discord.gg/jcnfGzwsUk)
+[Sponsoring](#sponsoring) | [License](/LICENSE) | [Discord](https://discord.gg/eF7WgdSc2v)
 
 
 ## Installation
@@ -246,7 +246,7 @@ If you decide on a one-time contribution of $500 or more, and there’s somethin
 
 ## Goals
 
-`ffmpreg` aims to be a safe, reliable, and maintainable Rust-native alternative
+FFmpReg aims to be a safe, reliable, and maintainable Rust-native alternative
 to FFmpeg. The project emphasizes deterministic and explicit pipelines, clear
 developer control, and minimal runtime surprises. All development prioritizes
 safety by avoiding `unsafe` code wherever possible, minimizing `unwrap`
