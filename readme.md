@@ -228,20 +228,20 @@ println!("Frame rate: {}/{}", format.framerate_num, format.framerate_den);
 
 ## Sponsoring
 
+[See all sponsors](/sponsors.md)
+
 FFmpReg is an open-source project released under the [Apache 2.0](/LICENSE) License,
 free for any use, including commercial.
 A permissive license helps the project grow and be useful for everyone.
 
 This project takes a huge amount of work, 
 studying codec algorithms and implementing them from scratch.
-
-Your support helps cover internet, energy, and tools,
+Your support helps cover internet, energy drink,
 and keeps me coding full-time for the community ^-^
 
-If you decide on a one-time contribution of $500 or more, and there’s something I can help you with, please let me know!  
+please consider [sponsoring](https://ko-fi.com/yazaldefilimone) it monthly or providing a one-time donation. Thank you! 🩷
 
-[Support me on Ko-fi](https://ko-fi.com/yazaldefilimone)
-
+> If you decide on a one-time contribution of $500 or more, and there’s something I can help you with, please let me know!  
 
 
 ## Goals
