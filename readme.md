@@ -5,7 +5,7 @@ directly from the terminal or integrate media processing into Rust applications.
 The project aims to deliver a safe, deterministic, and modular media processing
 engine with a focus on explicit pipelines and developer control.
 
-[Sponsoring](#sponsoring) | [License](/LICENSE) | [Discord](https://discord.gg/eF7WgdSc2v)
+[Sponsoring](#sponsoring) | [Versioning](#versioning) | [License](/LICENSE) | [Discord](https://discord.gg/eF7WgdSc2v)
 
 
 ## Installation
@@ -243,6 +243,20 @@ please consider [sponsoring](https://ko-fi.com/yazaldefilimone) it monthly or pr
 
 > If you decide on a one-time contribution of $500 or more, and there’s something I can help you with, please let me know!  
 
+# Versioning
+
+FFmpReg uses `major.minor.patch`. `major` is for incompatible api changes or major new
+features, `minor` is for new features compatible with existing apis, `patch` is for bug
+fixes or small adjustments.
+
+`pre-1.0` releases are functional but apis may change. 1.0 marks api stability and
+includes minimum beta features.
+
+containers include `mp4`, `mkv`, `webm`, `jpeg`, `png`, `wav`, `flac` and `ogg`. codecs are only `pcm`, `flac`,
+`opus`, and image decoders/encoders. tests cover unit and integration with example files.
+basic filters include `volume`, `normalize`, `scale`, and `fps`... (maybe more things)
+
+planned features may change... release tags reflect tested versions.
 
 ## Goals
 
